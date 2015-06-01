@@ -1,12 +1,12 @@
 package test;
 
 import comp.TestComponent;
-import cosmos.Entities;
 import cosmos.System;
+import cosmos.Entity;
 
 class TestSystem implements System{
 
-	var dogs : Entities<{a:TestComponent}>;
+	var dogs : List<Entity<{a:TestComponent}>> = new List();
 
 	public function new(){
 
@@ -14,10 +14,8 @@ class TestSystem implements System{
 
 	function update(now : Float, dt : Float){
 		for (dog in dogs){
-			dog.get(TestComponent).test();
+			dog.getTestComponent().test();
 		}
 	}
-
-
 
 }
