@@ -1,0 +1,7 @@
+-main CosmosTest
+-js bin/Main.js
+-cp src
+-debug
+-D source-map-content
+-dce full
+-D dump
