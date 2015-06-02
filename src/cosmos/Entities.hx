@@ -1,6 +1,6 @@
 package cosmos;
 
-@:generic
-class Entities<T> extends List<Entity<T>>{
+@:genericBuild(cosmos.macro.EntitiesMacro.apply())
+class Entities<T>{
 
 }

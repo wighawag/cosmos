@@ -31,12 +31,25 @@ class SystemMacro{
 												access:field.access
 												};
 											newFields.push(newField);	
+											//newFields.push(field);
 										}else{
 											newFields.push(field);
 										}
 										
 									default:newFields.push(field);
 								}
+							}else if(typePath.name == "Entities" && typePath.params.length == 1){
+								viewNames.push(field.name);
+								var newField = {
+									pos:field.pos,
+									name:field.name,
+									meta:field.meta,
+									kind : FVar(type,macro new $typePath()), //required , I do not know why?
+									doc:field.doc,
+									access:field.access
+									};
+								newFields.push(newField);	
+								//newFields.push(field);
 							}else{
 								newFields.push(field);
 							}

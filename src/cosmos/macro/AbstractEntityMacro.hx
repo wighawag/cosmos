@@ -1,8 +1,10 @@
 package cosmos.macro;
+
 import haxe.macro.Expr;
 import haxe.macro.Context;
 import haxe.macro.Type;
 using haxe.macro.Tools;
+import haxe.macro.ComplexTypeTools;
 
 class AbstractEntityMacro{
 
@@ -10,25 +12,40 @@ class AbstractEntityMacro{
     static var typeNames : Map<String,String> = new Map();
     static var numTypes = 0;
 
-    macro static public function apply() : ComplexType{
-        var useFieldName = true;
+    macro static public function apply() : Type{
         var pos = Context.currentPos();
 
         var localType = Context.getLocalType();
 
+        return ComplexTypeTools.toType(getOrCreateAbstractEntity(localType));
+    }
+
+    public static function getOrCreateAbstractEntity(localType){
+        var pos = Context.currentPos();
         var fields = getFieldsFromAnonymousTypeParam(localType);
         
         if(fields == null){
             Context.error("type not supported " + localType, pos);
             return null;
         }
-        
 
         var classPath = getClassPathFromClassFields(fields);
 
+        var type : ComplexType = null;
         if(classPath != null && types.exists(classPath.name)){
-            return types[classPath.name];
+            type = types[classPath.name];
+        }else{
+            type = createAbstractEntityFromFields(classPath, fields);  
+            types[classPath.name] = type; 
         }
+
+        return type;
+    }
+
+    private static function createAbstractEntityFromFields(classPath, fields : Array<ClassField>){
+        var useFieldName : Bool = true;
+        var pos = Context.currentPos();
+        
 
         var genericEntityType = TPath({name:"GenericEntity", pack:["cosmos"]});
         var newFields = new Array<Field>();
@@ -81,9 +98,8 @@ class AbstractEntityMacro{
 
         Context.defineType(typeDefinition);
 
-        var type = TPath(classPath);
+        var type : ComplexType = TPath(classPath);
 
-        types[classPath.name] = type;
         return type;
     }
 
@@ -101,7 +117,7 @@ class AbstractEntityMacro{
         return expr;
     }
 
-    private static function getFieldsFromAnonymousTypeParam(type : Type){
+    public static function getFieldsFromAnonymousTypeParam(type : Type){
         var pos = Context.currentPos();
         var typeParam = switch (type) {
             case TInst(_,[tp]):
