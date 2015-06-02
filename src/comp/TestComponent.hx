@@ -3,13 +3,11 @@ package comp;
 class TestComponent{
 
 
-	public function new(){
-
+	public function new(text : String){
+		test = text;
 	}
 
-	public function test(){
-		
-	}
+	public var test : String;
 
 
 }

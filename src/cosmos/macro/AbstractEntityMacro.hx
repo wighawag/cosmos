@@ -11,6 +11,7 @@ class AbstractEntityMacro{
     static var numTypes = 0;
 
     macro static public function apply() : ComplexType{
+        var useFieldName = true;
         var pos = Context.currentPos();
 
         var localType = Context.getLocalType();
@@ -37,16 +38,36 @@ class AbstractEntityMacro{
                     var className = classType.get().name;
                     var classPackage = classType.get().pack;
                     var eField = createAnEField(className, classPackage);
-                    newFields.push({
-                        name:"get" + className, 
-                        access:[APublic],
-                        kind : FFun({
-                            args:[], 
-                            ret:TPath({name:className, pack:classPackage}), 
-                            expr:macro return this.get($e{eField})
-                        }), 
-                        pos : pos
-                    });
+                    if(useFieldName){
+                        newFields.push({
+                            name:"get_" + field.name, 
+                            access:[APublic],
+                            kind : FFun({
+                                args:[], 
+                                ret:TPath({name:className, pack:classPackage}), 
+                                expr:macro return this.get($e{eField})
+                            }), 
+                            pos : pos
+                        });
+                        newFields.push({
+                            name:field.name, 
+                            access:[APublic],
+                            kind : FProp("get", "never",TPath({name:className, pack:classPackage}),null), 
+                            pos : pos
+                        });
+                    }else{
+                        newFields.push({
+                            name:"get" + className, 
+                            access:[APublic],
+                            kind : FFun({
+                                args:[], 
+                                ret:TPath({name:className, pack:classPackage}), 
+                                expr:macro return this.get($e{eField})
+                            }), 
+                            pos : pos
+                        });
+                    }
+                    
                 default : Context.error("do not support " + field.type + " as component", pos);
             }
         }

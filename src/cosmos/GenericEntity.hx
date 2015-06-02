@@ -1,13 +1,20 @@
 package cosmos;
 
+import belt.ClassMap;
+
 @:allow(cosmos)
 class GenericEntity{
 
-	private function new(){
+	var _components : ClassMap<Class<Dynamic>,Dynamic>;
 
+	private function new(components : Array<Dynamic>){
+		_components = new ClassMap();
+		for(component in components){
+			_components.set(Type.getClass(component), component);
+		}
 	}
 
 	public function get<T>(componentClass : Class<T>):T{
-		return null; //TODO 
+		return _components.get(componentClass);
 	}
 }
