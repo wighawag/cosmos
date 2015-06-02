@@ -8,16 +8,18 @@ import cosmos.Updatable;
 
 class TestSystem implements System implements Updatable{
 
-	var dogs : Entities<{test:TestComponent}>;
+	var set1 : Entities<{test:TestComponent}>;
+	var set2 : Entities<{test:TestComponent}>;
 
-	public function new(){
-
-	}
 
 	public function update(now : Float, dt : Float){
-		trace("dogs");
-		for (dog in dogs){
-			trace(dog.test.test);
+		trace("set1");
+		for (entity in set1){
+			trace(entity.test.test);
+		}
+		trace("set2");
+		for (entity in set2){
+			trace(entity.test.test);
 		}
 	}
 

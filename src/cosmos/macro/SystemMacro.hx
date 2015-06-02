@@ -89,25 +89,32 @@ class SystemMacro{
 		                case FieldType.FFun( func ):
 		                    switch (func.expr.expr){
 		                        case EBlock(exprs): constructorExprs = exprs;
-		                        default : trace( "not a block ");
+		                        default : Context.error("No Constructor is not a block", pos);
 		                    }
 
-		                default : trace("constructor should be a function");
+		                default : Context.error("constructor should be a function",pos);
 		            }
 		        }
 		    }
 
-		    if (constructorExprs != null){
-		    	constructorExprs.push(macro views = new Array());
-		    	for (viewName in viewNames){
-		    		constructorExprs.push(macro views.push(cast $i{viewName}));
-				}
+		    if (constructorExprs == null){
+		    	constructorExprs = new Array<Expr>();
+		    	newFields.push({
+		    		name:"new", 
+	                access:[APublic],
+	                kind : FFun({
+                        args:[], 
+                        ret:null, 
+                        expr:{expr:EBlock(constructorExprs), pos:pos}
+                    }),
+	                pos : pos
+		    		});
 		    }
-		    else
-		    {
-		        Context.error("No Construcotr found", pos);
-		        return null;
-		    }
+
+		    constructorExprs.push(macro views = new Array());
+	    	for (viewName in viewNames){
+	    		constructorExprs.push(macro views.push(cast $i{viewName}));
+			}
 
 		}
 		
