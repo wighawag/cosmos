@@ -26,7 +26,6 @@ class AbstractEntityMacro{
         var classPath = getClassPathFromClassFields(fields);
 
         if(classPath != null && types.exists(classPath.name)){
-            trace("already built");
             return types[classPath.name];
         }
 

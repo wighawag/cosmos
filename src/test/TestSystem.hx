@@ -6,7 +6,7 @@ import cosmos.Entity;
 
 class TestSystem implements System{
 
-	var dogs : List<Entity<{a:TestComponent}>> = new List();
+	var dogs : List<Entity<{a:TestComponent}>>;
 
 	public function new(){
 
