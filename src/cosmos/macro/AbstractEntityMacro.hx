@@ -92,7 +92,7 @@ class AbstractEntityMacro{
             pos : pos,
             pack : classPath.pack,
             name : classPath.name,
-            kind :TDAbstract(genericEntityType),
+            kind :TDAbstract(genericEntityType, null,[genericEntityType]),
             fields:newFields
         }
 
@@ -103,7 +103,7 @@ class AbstractEntityMacro{
         return type;
     }
 
-    private static function createAnEField(className : String, classPackage : Array<String>) : Expr{
+    public static function createAnEField(className : String, classPackage : Array<String>) : Expr{
         if(classPackage.length == 0){
             return macro $i{className};
         }

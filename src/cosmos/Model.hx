@@ -11,7 +11,7 @@ class Model implements Updatable{
 
 	var _entities : List<GenericEntity>;
 
-	var _views : Array<List<GenericEntity>>;
+	var _views : Array<ModelFacet<GenericEntity>>;
 
 	public function new(systems : Array<System>){
 		_views = new Array();
@@ -55,14 +55,14 @@ class Model implements Updatable{
 		var newEntity = new GenericEntity(components);
 		_entities.add(newEntity);
 		for(view in _views){
-			view.add(newEntity);//addEntityIfMatch(newEntity);
+			view.addEntityIfMatch(newEntity);
 		}
 	}
 
 	public function removeEntity(entity : GenericEntity){
 		_entities.remove(entity);
 		for(view in _views){
-			view.remove(entity);//removeEntity(entity);
+			view.removeEntity(entity);
 		}
 	}
 

@@ -49,7 +49,7 @@ class EntitiesMacro{
 
         // types[classPath.name] = type;
         // return type;
-        return TPath({pack:[],name:"List", params:[TPType(entityType)]});
+        return TPath({pack:["cosmos"],name:"ModelFacet", params:[TPType(entityType)]});
     }
 
     private static function getClassPathFromClassFields(fields : Array<haxe.macro.ClassField>) :  TypePath{

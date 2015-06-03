@@ -17,34 +17,29 @@ class SystemMacro{
 				case FVar(type,expr):
 					switch(type){
 						case TPath(typePath):
-							if(typePath.name == "List" && typePath.params.length == 1){
+							if(typePath.name == "Entities" && typePath.params.length == 1){
+								var componentTypePaths = new Array<Expr>();
 								switch(typePath.params[0]){
-									case TPType(TPath(p)):
-										if(p.name == "Entity"){
-											viewNames.push(field.name);
-											var newField = {
-												pos:field.pos,
-												name:field.name,
-												meta:field.meta,
-												kind : FVar(type,macro new $typePath()), //required , I do not know why?
-												doc:field.doc,
-												access:field.access
-												};
-											newFields.push(newField);	
-											//newFields.push(field);
-										}else{
-											newFields.push(field);
+									case TPType(TAnonymous(componentFields)):
+										for(componentField in componentFields){
+											switch(componentField.kind){
+												case FVar(t,_):
+													switch(t){
+														case TPath(p):
+															componentTypePaths.push(AbstractEntityMacro.createAnEField(p.name,p.pack));
+														default: Context.error("component spec not valid " + typePath.params[0],pos);
+													}
+												default: Context.error("component spec not valid " + typePath.params[0],pos);
+											}
 										}
-										
-									default:newFields.push(field);
+									default:Context.error("component spec not valid " + typePath.params[0],pos);
 								}
-							}else if(typePath.name == "Entities" && typePath.params.length == 1){
 								viewNames.push(field.name);
 								var newField = {
 									pos:field.pos,
 									name:field.name,
 									meta:field.meta,
-									kind : FVar(type,macro new $typePath()), //required , I do not know why?
+									kind : FVar(type,macro new $typePath($e{{expr:EArrayDecl(componentTypePaths),pos:pos}})), 
 									doc:field.doc,
 									access:field.access
 									};
@@ -75,42 +70,39 @@ class SystemMacro{
 		newFields.push({
                 name:"views", 
                 access:[APublic], //TODO private with @:allow Model
-                kind : FVar(macro :Array<List<cosmos.GenericEntity>>,macro new Array()), 
+                kind : FVar(macro :Array<cosmos.ModelFacet<cosmos.GenericEntity>>,macro new Array()), 
                 pos : pos
             });
 
 
+		var constructorExprs : Array<Expr> = null;
+		for (field in newFields){
+	        if (field.name == "new"){
+	            switch(field.kind){
+	                case FieldType.FFun( func ):
+	                    switch (func.expr.expr){
+	                        case EBlock(exprs): constructorExprs = exprs;
+	                        default : Context.error("No Constructor is not a block", pos);
+	                    }
+	                default : Context.error("constructor should be a function",pos);
+	            }
+	        }
+	    }
+	    if (constructorExprs == null){
+	    	constructorExprs = new Array<Expr>();
+	    	newFields.push({
+	    		name:"new", 
+                access:[APublic],
+                kind : FFun({
+                    args:[], 
+                    ret:null, 
+                    expr:{expr:EBlock(constructorExprs), pos:pos}
+                }),
+                pos : pos
+	    		});
+	    }
+
 		if(viewNames.length > 0){
-			var constructorExprs : Array<Expr>;
-		    // get the fields of the current class
-		    for (field in newFields){
-		        if (field.name == "new"){
-		            switch(field.kind){
-		                case FieldType.FFun( func ):
-		                    switch (func.expr.expr){
-		                        case EBlock(exprs): constructorExprs = exprs;
-		                        default : Context.error("No Constructor is not a block", pos);
-		                    }
-
-		                default : Context.error("constructor should be a function",pos);
-		            }
-		        }
-		    }
-
-		    if (constructorExprs == null){
-		    	constructorExprs = new Array<Expr>();
-		    	newFields.push({
-		    		name:"new", 
-	                access:[APublic],
-	                kind : FFun({
-                        args:[], 
-                        ret:null, 
-                        expr:{expr:EBlock(constructorExprs), pos:pos}
-                    }),
-	                pos : pos
-		    		});
-		    }
-
 		    constructorExprs.push(macro views = new Array());
 	    	for (viewName in viewNames){
 	    		constructorExprs.push(macro views.push(cast $i{viewName}));
@@ -122,7 +114,7 @@ class SystemMacro{
 		newFields.push({
                 name:"model", 
                 access:[APublic], //TODO private with @:allow Model
-                kind : FVar(TPath({name:"Model",pack:["cosmos"]}),null), 
+                kind : FVar(TPath({name:"ModelData",pack:["cosmos"]}),null), 
                 pos : pos
             });
 
