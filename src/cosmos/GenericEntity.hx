@@ -6,8 +6,10 @@ import belt.ClassMap;
 class GenericEntity{
 
 	var _components : ClassMap<Class<Dynamic>,Dynamic>;
+	public var type(default, null) : GenericEntity;
 
-	private function new(components : Array<Dynamic>){
+	private function new(type : GenericEntity, components : Array<Dynamic>) {
+		this.type = type;
 		_components = new ClassMap();
 		for(component in components){
 			_components.set(Type.getClass(component), component);

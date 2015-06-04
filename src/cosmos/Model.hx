@@ -52,7 +52,22 @@ class Model implements Updatable{
 	}
 
 	public function addEntity(components : Array<Dynamic>){
-		var newEntity = new GenericEntity(components);
+		var newEntity = new GenericEntity(null,components);
+		_entities.add(newEntity);
+		for(view in _views){
+			view.addEntityIfMatch(newEntity);
+		}
+	}
+	
+	public function addEntityOfType(entityType : EntityType, components : Array<Dynamic>) {
+		var type : GenericEntity = entityType;
+		for (typeComponent in type._components) {
+			if (Std.is(typeComponent, ComponentProvider)) {
+				var provider : ComponentProvider = cast typeComponent;
+				components.concat(provider.getComponents());//TODO check duplicates
+			}
+		}
+		var newEntity = new GenericEntity(type,components);
 		_entities.add(newEntity);
 		for(view in _views){
 			view.addEntityIfMatch(newEntity);

@@ -6,6 +6,7 @@ class SystemMacro{
 	public static function apply() : Array<Field>{
 		var pos = Context.currentPos();
 		var newFields = new Array<Field>();
+		
 		var fields = Context.getBuildFields();
 		var hasInitialiseField = false;
 		var viewNames : Array<String> = new Array();
@@ -19,18 +20,42 @@ class SystemMacro{
 						case TPath(typePath):
 							if(typePath.name == "Entities" && typePath.params.length == 1){
 								var componentTypePaths = new Array<Expr>();
+								var typeComponentTypePaths = new Array<Expr>();
 								switch(typePath.params[0]){
 									case TPType(TAnonymous(componentFields)):
-										for(componentField in componentFields){
-											switch(componentField.kind){
+										for (componentField in componentFields) {
+											if (componentField.name == "type") {
+												switch(componentField.kind){
 												case FVar(t,_):
 													switch(t){
-														case TPath(p):
-															componentTypePaths.push(AbstractEntityMacro.createAnEField(p.name,p.pack));
+														case TAnonymous(typeComponentFields):
+															for (typeComponentField in typeComponentFields) {																
+																switch(typeComponentField.kind){
+																case FVar(t,_):
+																	switch(t){
+																		case TPath(p):
+																			typeComponentTypePaths.push(AbstractEntityMacro.createAnEField(p.name, p.pack));
+																		default: Context.error("component spec not valid " + typePath.params[0],pos);
+																	}
+																default: Context.error("component spec not valid " + typePath.params[0],pos);
+																}
+															}
 														default: Context.error("component spec not valid " + typePath.params[0],pos);
 													}
 												default: Context.error("component spec not valid " + typePath.params[0],pos);
+												}
+											}else {
+												switch(componentField.kind){
+												case FVar(t,_):
+													switch(t){
+														case TPath(p):
+															componentTypePaths.push(AbstractEntityMacro.createAnEField(p.name, p.pack));
+														default: Context.error("component spec not valid " + typePath.params[0],pos);
+													}
+												default: Context.error("component spec not valid " + typePath.params[0],pos);
+												}
 											}
+											
 										}
 									default:Context.error("component spec not valid " + typePath.params[0],pos);
 								}
@@ -39,7 +64,7 @@ class SystemMacro{
 									pos:field.pos,
 									name:field.name,
 									meta:field.meta,
-									kind : FVar(type,macro new $typePath($e{{expr:EArrayDecl(componentTypePaths),pos:pos}})), 
+									kind : FVar(type,macro new $typePath($e{{expr:EArrayDecl(componentTypePaths),pos:pos}},$e{{expr:EArrayDecl(typeComponentTypePaths),pos:pos}})), 
 									doc:field.doc,
 									access:field.access
 									};

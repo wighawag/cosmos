@@ -27,7 +27,7 @@ class EntitiesMacro{
 
         var classPath = getClassPathFromClassFields(fields);
 
-        var entityType : ComplexType = AbstractEntityMacro.getOrCreateAbstractEntity(localType);
+        var entityType : ComplexType = AbstractEntityMacro.getOrCreateAbstractEntity(fields);
 
         // var classPath = getClassPathFromClassFields(fields);
 
