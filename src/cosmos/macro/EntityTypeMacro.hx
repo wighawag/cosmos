@@ -13,10 +13,19 @@ typedef TypeDefinitions = DynamicAccess<TypeDefinition>;
 class EntityTypeMacro
 {
 
-	public static function apply(jsonPath : String) : Array<Field>
+	public static function apply() : Array<Field>
 	{
+		//TODO get types.json form compiler, if not found do not use types
+		var jsonPath : String = "types.json";
+		
 		var pos = Context.currentPos();
-		var content = File.getContent(jsonPath);
+		var content : String = "";
+		try {
+			content = File.getContent(jsonPath);
+		}catch( e : Dynamic){
+			return null;
+		}
+		
 		var typeDefinitions : TypeDefinitions = Json.parse(content);
 		var fields = Context.getBuildFields();
 		for (typeName in typeDefinitions.keys()) {

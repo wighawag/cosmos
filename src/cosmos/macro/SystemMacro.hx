@@ -14,9 +14,14 @@ class SystemMacro{
 		for (field in fields){
 			if(field.name == "initialise"){
 				hasInitialiseField = true;
+				newFields.push(field);
+				continue;
 			}
 			if (field.name == "update") {
 				hasUpdateField = true;
+				field.meta.push( { pos:pos, name:"@:noCompletion" } ); //TODO test
+				newFields.push(field);
+				continue;
 			}
 			switch(field.kind){
 				case FVar(type,expr):
