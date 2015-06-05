@@ -3,7 +3,13 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 
 class SystemMacro{
-	public static function apply() : Array<Field>{
+	public static function apply() : Array<Field> {
+	
+		var localClass = Context.getLocalClass().get();
+        if (localClass.isInterface){
+            return null;
+        }
+		
 		var pos = Context.currentPos();
 		var newFields = new Array<Field>();
 		

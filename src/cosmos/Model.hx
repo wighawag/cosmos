@@ -3,9 +3,10 @@ package cosmos;
 import belt.ClassMap;
 import cosmos.GenericEntity;
 
+@:access(cosmos)
 class Model{
 
-	var _systems : ClassMap<Class<System>, System>;
+	var _systems : ClassMap<Class<System>, System>; // TODO get rif of Map as nobdy access them
 	var _updatableSystems : Array<System>;
 
 	var _entities : List<GenericEntity>;
@@ -42,6 +43,17 @@ class Model{
   //           }
   //           cast(failedSystem,ModelComponent).model = null;
   //       }
+	}
+	
+	public function addPresenter(presenter : CosmosPresenter) {
+		presenter.model = this;
+		for (view in presenter.views){
+			_views.push(view);
+			for(entity in _entities){
+				view.addEntityIfMatch(entity);
+			}
+		}
+		presenter.initialise();
 	}
 
 	public function update(now : Float, delta : Float){
