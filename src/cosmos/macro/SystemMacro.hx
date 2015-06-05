@@ -9,10 +9,14 @@ class SystemMacro{
 		
 		var fields = Context.getBuildFields();
 		var hasInitialiseField = false;
+		var hasUpdateField = false;
 		var viewNames : Array<String> = new Array();
 		for (field in fields){
 			if(field.name == "initialise"){
 				hasInitialiseField = true;
+			}
+			if (field.name == "update") {
+				hasUpdateField = true;
 			}
 			switch(field.kind){
 				case FVar(type,expr):
@@ -69,7 +73,6 @@ class SystemMacro{
 									access:field.access
 									};
 								newFields.push(newField);	
-								//newFields.push(field);
 							}else{
 								newFields.push(field);
 							}
@@ -82,20 +85,45 @@ class SystemMacro{
 		if(!hasInitialiseField){
 			newFields.push({
                 name:"initialise", 
-                access:[APublic],
+                access:[APrivate],
                 kind : FFun({
                     args:[], 
                     ret:null, 
                     expr:macro {}
                 }), 
+				meta : [{pos:pos,name:"@:noCompletion"}], //TODO test
                 pos : pos
             });
 		}
+		
+		if (!hasUpdateField) {
+			newFields.push({
+                name:"update", 
+                access:[APrivate],
+                kind : FFun({
+					args:[{name:"now",type:macro :Float},{name:"delta",type:macro :Float}], 
+                    ret:null, 
+                    expr:macro {}
+                }), 
+				meta : [{pos:pos,name:"@:noCompletion"}], //TODO test
+                pos : pos
+            });
+		}
+		
+		newFields.push({
+                name:"updatable", 
+                access:[APrivate], //TODO private with @:allow Model
+                kind : FVar(macro :Bool, macro $v{hasUpdateField}), 
+				meta : [{pos:pos,name:"@:noCompletion"}],//TODO test
+                pos : pos
+            });
+
 
 		newFields.push({
                 name:"views", 
-                access:[APublic], //TODO private with @:allow Model
-                kind : FVar(macro :Array<cosmos.ModelFacet<cosmos.GenericEntity>>,macro new Array()), 
+                access:[APrivate], //TODO private with @:allow Model
+                kind : FVar(macro :Array<cosmos.ModelFacet<cosmos.GenericEntity>>, macro new Array()), 
+				meta : [{pos:pos,name:"@:noCompletion"}],//TODO test
                 pos : pos
             });
 

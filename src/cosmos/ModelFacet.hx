@@ -2,7 +2,10 @@ package cosmos;
 
 import cosmos.GenericEntity;
 
-class ModelFacet<T>{
+@:allow(cosmos.Model)
+class ModelFacet<T> {
+	var onAddedFunc : T ->Void;
+	var onRemovedFunc : T ->Void;
 	var list : List<T>;
 
 	private var componentClasses : Array<Class<Dynamic>>;
@@ -13,12 +16,20 @@ class ModelFacet<T>{
 		this.componentClasses = componentClasses.copy();
 		this.typeComponentClasses = typeComponentClasses.copy();
 	}
+	
+	public function onEntityAdded(func : T->Void) {
+		this.onAddedFunc = func;
+	}
+	
+	public function onEntityRemoved(func : T->Void) {
+		this.onRemovedFunc = func;
+	}
 
 	inline public function iterator() {
 		return list.iterator();
 	}
 
-	public function addEntityIfMatch(entity : GenericEntity) : Bool{
+	private function addEntityIfMatch(entity : GenericEntity) : Bool{
 		for(componentClass in componentClasses){
 			if(!entity.has(componentClass)){
 				return false;
@@ -30,11 +41,18 @@ class ModelFacet<T>{
 				return false;
 			}
 		}
-		list.add(cast entity);
+		var theEntity : T = cast entity;
+		list.add(theEntity);
+		if (onAddedFunc != null) {
+			onAddedFunc(theEntity);
+		}
 		return true;
 	}
 
-	public function removeEntity(entity : GenericEntity){
+	private function removeEntity(entity : GenericEntity){
 		list.remove(cast entity);
+		if (onRemovedFunc != null) {
+			onRemovedFunc(cast entity);
+		}
 	}
 }

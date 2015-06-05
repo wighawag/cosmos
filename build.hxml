@@ -4,4 +4,4 @@
 -debug
 -D source-map-content
 -dce full
-#-D dump
+#-D dump=pretty

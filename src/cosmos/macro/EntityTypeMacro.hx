@@ -41,9 +41,7 @@ class EntityTypeMacro
 				access:[AStatic, APublic]
 			} );
 		}
-		//	"comp.Provider":{"classes":["comp.Placement"]}
-		//public static var DOG(default,null) : EntityType = new EntityType(new GenericEntity(null, [new BioType(4)]));
-		
+
 		return fields;
 	}
 	

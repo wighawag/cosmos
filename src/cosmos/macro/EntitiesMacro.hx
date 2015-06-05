@@ -29,26 +29,6 @@ class EntitiesMacro{
 
         var entityType : ComplexType = AbstractEntityMacro.getOrCreateAbstractEntity(fields);
 
-        // var classPath = getClassPathFromClassFields(fields);
-
-        // if(classPath != null && types.exists(classPath.name)){
-        //     return types[classPath.name];
-        // }
-
-        // var typeDefinition : TypeDefinition = {
-        //     pos : pos,
-        //     pack : classPath.pack,
-        //     name : classPath.name,
-        //     kind :TDAbstract(genericEntityType),
-        //     fields:newFields
-        // }
-
-        // Context.defineType(typeDefinition);
-
-        // var type : ComplexType = TPath({}});
-
-        // types[classPath.name] = type;
-        // return type;
         return TPath({pack:["cosmos"],name:"ModelFacet", params:[TPType(entityType)]});
     }
 

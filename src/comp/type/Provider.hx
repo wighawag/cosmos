@@ -1,23 +1,27 @@
 package comp.type;
 import cosmos.ComponentProvider;
+import haxe.DynamicAccess;
 
 class Provider implements ComponentProvider
 {
 	var componentClasses : Array<Class<Dynamic>>;
+	var componentArguments : Array<Dynamic>;
 	
-	public function new(componentClassPaths : Array<String>) 
+	public function new(components : DynamicAccess<Array<Dynamic>>) 
 	{
 		componentClasses = new Array();
-		for (componentClassPath in componentClassPaths) {
+		componentArguments = new Array();
+		for (componentClassPath in components.keys()) {
 			componentClasses.push(Type.resolveClass(componentClassPath));
+			componentArguments.push(components[componentClassPath]);
 		}
 	}
 	
 	public function getComponents():Array<Dynamic> 
 	{
 		var newComponents = [];
-		for (componentClass in componentClasses) {
-			newComponents.push(Type.createInstance(componentClass,[]));
+		for (i in 0...componentClasses.length) {
+			newComponents.push(Type.createInstance(componentClasses[i],componentArguments[i]));
 		}
 		return newComponents;
 	}

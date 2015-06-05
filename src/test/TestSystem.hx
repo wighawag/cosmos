@@ -9,14 +9,21 @@ import cosmos.Entity;
 import cosmos.Entities;
 import cosmos.Updatable;
 
-class TestSystem implements System implements Updatable{
-
+class TestSystem implements System{
+	
 	var set1 : Entities<{test:TestComponent}>;
 	var set2 : Entities<{flame:FlameComponent}>;
 	var set3 : Entities<{test:TestComponent,flame:FlameComponent, type:{flame:FlameComponent}}>;
 	var set4 : Entities<{type:{bioType:BioType}}>;
 	var set5 : Entities<{placement:Placement}>;
 
+	public function initialise() {
+		set4.onEntityAdded(entityAddedToSet4);
+	}
+	
+	function entityAddedToSet4(entity) {
+		trace(entity);
+	}
 
 	public function update(now : Float, dt : Float){
 		trace("set1");
