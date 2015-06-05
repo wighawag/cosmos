@@ -7,7 +7,6 @@ import comp.type.BioType;
 import cosmos.System;
 import cosmos.Entity;
 import cosmos.Entities;
-import cosmos.Updatable;
 
 class TestSystem implements System{
 	
@@ -17,7 +16,7 @@ class TestSystem implements System{
 	var set4 : Entities<{type:{bioType:BioType}}>;
 	var set5 : Entities<{placement:Placement}>;
 
-	public function initialise() {
+	function initialise() {
 		set4.onEntityAdded(entityAddedToSet4);
 	}
 	
@@ -25,7 +24,7 @@ class TestSystem implements System{
 		trace(entity);
 	}
 
-	public function update(now : Float, dt : Float){
+	function update(now : Float, dt : Float){
 		trace("set1");
 		for (entity in set1){
 			trace(entity.test.test);

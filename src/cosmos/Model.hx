@@ -2,12 +2,11 @@ package cosmos;
 
 import belt.ClassMap;
 import cosmos.GenericEntity;
-import cosmos.Updatable;
 
-class Model implements Updatable{
+class Model{
 
 	var _systems : ClassMap<Class<System>, System>;
-	var _updatableSystems : Array<Updatable>;
+	var _updatableSystems : Array<System>;
 
 	var _entities : List<GenericEntity>;
 
@@ -19,7 +18,7 @@ class Model implements Updatable{
 		_systems = new ClassMap();
 		_updatableSystems = new Array();
 		for(system in systems){
-			if (Std.is(system, Updatable)){
+			if (system.updatable){
                 _updatableSystems.push(cast system);
             }
             _systems.set(Type.getClass(system), system);
