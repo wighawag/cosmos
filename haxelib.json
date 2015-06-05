@@ -1,0 +1,13 @@
+{
+	"name":"cosmos",
+	"license":"MIT",
+	"tags":["haxelib","system"],
+	"description":"a Entity component system",
+	"contributors":["wighawag"],
+	"releasenote":"update version",
+	"version":"0.5.0",
+	"url":"https://github.com/wighawag/cosmos",
+	"classPath":"src",
+	"dependencies":{
+	}
+}
