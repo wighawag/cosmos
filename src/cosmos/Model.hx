@@ -75,7 +75,7 @@ class Model{
 		for (typeComponent in type._components) {
 			if (Std.is(typeComponent, ComponentProvider)) {
 				var provider : ComponentProvider = cast typeComponent;
-				components.concat(provider.getComponents());//TODO check duplicates
+				provider.addComponents(components);
 			}
 		}
 		var newEntity = new GenericEntity(type,components);

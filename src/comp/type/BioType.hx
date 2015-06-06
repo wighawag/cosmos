@@ -11,8 +11,8 @@ class BioType implements ComponentProvider
 		this.maxLife = maxLife;
 	}
 	
-	public function getComponents() : Array<Dynamic> {
-		return [new Bio(maxLife)];
+	public function addComponents(components : Array<Dynamic>) :Void {
+		components.push(new Bio(maxLife));
 	}
 	
 }

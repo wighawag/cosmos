@@ -11,8 +11,11 @@ class GenericEntity{
 	private function new(type : GenericEntity, components : Array<Dynamic>) {
 		this.type = type;
 		_components = new ClassMap();
-		for(component in components){
-			_components.set(Type.getClass(component), component);
+		for (component in components) {
+			var clazz = Type.getClass(component);
+			if (!_components.exists(clazz)){	
+				_components.set(clazz, component);
+			}
 		}
 	}
 

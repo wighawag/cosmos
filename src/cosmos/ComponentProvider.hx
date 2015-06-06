@@ -4,6 +4,6 @@ package cosmos;
 interface ComponentProvider
 {
 
-	function getComponents() : Array<Dynamic>;
+	function addComponents(components : Array<Dynamic>) : Void;
 	
 }
