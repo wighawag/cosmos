@@ -7,7 +7,7 @@ class Provider implements ComponentProvider
 	var componentClasses : Array<Class<Dynamic>>;
 	var componentArguments : Array<Dynamic>;
 	
-	public function new(components : DynamicAccess<Array<Dynamic>>) 
+	public function new(components : DynamicAccess<String>) 
 	{
 		componentClasses = new Array();
 		componentArguments = new Array();

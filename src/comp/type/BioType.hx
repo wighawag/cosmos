@@ -6,9 +6,9 @@ import haxe.DynamicAccess;
 class BioType implements ComponentProvider
 {
 	public var maxLife(default,null) : Int = 0;
-	public function new(value : DynamicAccess<Int>) 
+	public function new(maxLife : Int) 
 	{
-		this.maxLife = value["maxLife"];
+		this.maxLife = maxLife;
 	}
 	
 	public function getComponents() : Array<Dynamic> {

@@ -1,6 +1,6 @@
 {
 "dog":{
 	"comp.type.BioType" : {"maxLife":3},
-	"comp.type.Provider":{"comp.Placement":[3,5]}
+	"comp.type.Provider":{"compomemts":{"comp.Placement":[3,5]}}
 	}
 }
