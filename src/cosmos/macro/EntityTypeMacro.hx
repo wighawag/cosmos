@@ -33,6 +33,7 @@ class EntityTypeMacro
 			var typeDefinition = typeDefinitions[typeName];
 			var components : Array<Expr> = [];
 			for (componentClassPath in typeDefinition.type.keys()) {
+				var componentDef = typeDefinition.type[componentClassPath];
 				var dotIndex = componentClassPath.lastIndexOf(".");
 				var typePath = { name : "", pack:[] };
 				if (dotIndex == -1) {
@@ -55,7 +56,15 @@ class EntityTypeMacro
 						switch(type) {
 							case TFun(args, _):
 								for (arg in args) {
-									argExprs.push(macro $v { typeDefinition.type[componentClassPath][arg.name] } );
+									if (componentDef.exists(arg.name)) {
+										argExprs.push(macro $v { componentDef[arg.name] } );
+										componentDef.remove(arg.name);
+									}else {
+										Context.error("Missing argument for " + componentClassPath + " : " + arg.name, pos);
+									}
+								}
+								for (extraArgName in componentDef.keys()) {
+									Context.warning("Extra argument for " + componentClassPath + " : " + extraArgName, pos);
 								}
 							default:Context.error("constructor should be a TFun", pos);
 						}
@@ -65,7 +74,11 @@ class EntityTypeMacro
 				components.push( { expr:ENew(typePath, argExprs), pos:pos } );
 			}
 			
+			
+			
+			var instanceComponentConstructions = new Array<Expr>();
 			for (componentClassPath in typeDefinition.instance.keys()) {
+				var componentDef = typeDefinition.instance[componentClassPath];
 				var dotIndex = componentClassPath.lastIndexOf(".");
 				var typePath = { name : "", pack:[] };
 				if (dotIndex == -1) {
@@ -88,14 +101,27 @@ class EntityTypeMacro
 						switch(type) {
 							case TFun(args, _):
 								for (arg in args) {
-									argExprs.push(macro $v { typeDefinition.type[componentClassPath][arg.name] } );
+									if (componentDef.exists(arg.name)) {
+										argExprs.push(macro $v { componentDef[arg.name] } );
+										componentDef.remove(arg.name);
+									}else {
+										Context.error("Missing argument for " + componentClassPath + " : " + arg.name, pos);
+									}
+								}
+								for (extraArgName in componentDef.keys()) {
+									Context.warning("Extra argument for " + componentClassPath + " : " + extraArgName, pos);
 								}
 							default:Context.error("constructor should be a TFun", pos);
 						}
 					default: Context.error("can only be a class", pos);
 				}
 				
-				//TODO create a ProviderComponent components.push( { expr:ENew(typePath, argExprs), pos:pos } );
+				instanceComponentConstructions.push({ expr:ENew(typePath, argExprs), pos:pos } );
+			}
+			
+			if (instanceComponentConstructions.length > 0) {
+				var typePath = ProviderMacro.createProvider(instanceComponentConstructions);
+				components.push( { expr:ENew(typePath, []), pos:pos } );
 			}
 			
 			fields.push( {

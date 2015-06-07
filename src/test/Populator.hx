@@ -17,7 +17,7 @@ class Populator implements System{
 		model.addEntity([new FlameComponent(1)]);
 		model.addEntity([new TestComponent("both"), new FlameComponent(2)]);	
 		
-		model.addEntityOfType(EntityType.DOG, [new Placement(0,0)]);
+		model.addEntityOfType(EntityType.DOG, [new TestComponent("DOG")]);
 		
 	}
 

@@ -27,11 +27,14 @@ class Model{
 
 
 		for(system in systems){
-			system.model = this;
-			system.initialise();
 			for (view in system.views){
 				_views.push(view);
 			}
+		}		
+		
+		for(system in systems){
+			system.model = this;
+			system.initialise();
 		}		
 
 		// var failedSystems = initialise(systems);
