@@ -1,7 +1,7 @@
-![travis status](https://travis-ci.org/wighawag/cosmos.svg)
+[![travis status](https://travis-ci.org/wighawag/cosmos.svg)](https://travis-ci.org/wighawag/cosmos)
 	
 Cosmos
 ======
 
-A Type Safe Component Entity System with minimum overhead + Types
+A Null Safe Component Entity System with minimum overhead + Types
 
