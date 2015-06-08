@@ -127,7 +127,7 @@ class EntityTypeMacro
 			fields.push( {
 				pos:pos,
 				name:typeName.toUpperCase(),
-				kind:FProp("default","null",macro:cosmos.EntityType,macro new cosmos.EntityType(new cosmos.GenericEntity(null,$e{{expr:EArrayDecl(components),pos:pos}}))),
+				kind:FProp("default","null",macro:cosmos.EntityType,macro new cosmos.EntityType(new cosmos.GenericEntityType($v{typeName},$e{{expr:EArrayDecl(components),pos:pos}}))),
 				access:[AStatic, APublic]
 			} );
 		}

@@ -2,9 +2,9 @@ package cosmos;
 
 
 @:build(cosmos.macro.EntityTypeMacro.apply())
-abstract EntityType(GenericEntity) to(GenericEntity)
+abstract EntityType(GenericEntityType) to(GenericEntityType)
 {
-	public function new(entity : GenericEntity) {
-		this = entity;	
+	public function new(type : GenericEntityType) {
+		this = type;	
 	}
 }

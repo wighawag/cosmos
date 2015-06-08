@@ -27,8 +27,8 @@ class AbstractEntityMacro{
         return ComplexTypeTools.toType(getOrCreateAbstractEntity(fields));
     }
 
-    public static function getOrCreateAbstractEntity(fields, ?canHaveAType : Bool = true){
-        var classPath = getClassPathFromClassFields(fields, canHaveAType);
+    public static function getOrCreateAbstractEntity(fields, ?isType : Bool = false){
+        var classPath = getClassPathFromClassFields(fields, isType);
 
         var type : ComplexType = null;
 		var name = classPath.name;
@@ -36,25 +36,44 @@ class AbstractEntityMacro{
         if(classPath != null && types.exists(name)){
             type = types[name];
         }else{
-            type = createAbstractEntityFromFields(classPath, fields, canHaveAType);  
+            type = createAbstractEntityFromFields(classPath, fields, isType);  
             types[name] = type; 
         }
 
         return type;
     }
 
-    private static function createAbstractEntityFromFields(classPath, fields : Array<ClassField>, ?canHaveAType : Bool = true){
+    private static function createAbstractEntityFromFields(classPath, fields : Array<ClassField>, ?isType : Bool = false){
         var useFieldName : Bool = true;
         var pos = Context.currentPos();
         
-
-        var genericEntityType = TPath({name:"GenericEntity", pack:["cosmos"]});
-        var newFields = new Array<Field>();
+		var newFields = new Array<Field>();
+        var genericEntityType = TPath( { name:"GenericEntity", pack:["cosmos"] } );
+		if (isType) {
+			genericEntityType = TPath( { name:"GenericEntityType", pack:["cosmos"] } );	
+			newFields.push({
+					name:"get_id", 
+					access:[APublic,AInline],
+					kind : FFun({
+						args:[], 
+						ret:macro:String, 
+						expr:macro return this.id
+					}), 
+					pos : pos
+				});
+			newFields.push({
+					name:"id", 
+					access:[APublic],
+					kind : FProp("get", "never",macro:String,null), 
+					pos : pos
+				});
+		}
+       
         for (field in fields) {
-			if (canHaveAType && field.name == "type") {
+			if (!isType && field.name == "type") {
 				switch(field.type) {
 				case TAnonymous(t):
-					var typePath = getOrCreateAbstractEntity(t.get().fields,false);
+					var typePath = getOrCreateAbstractEntity(t.get().fields,true);
 					newFields.push({
                             name:"get_" + field.name, 
                             access:[APublic,AInline],
@@ -65,7 +84,7 @@ class AbstractEntityMacro{
                             }), 
                             pos : pos
                         });
-                        newFields.push({
+					newFields.push({
                             name:field.name, 
                             access:[APublic],
                             kind : FProp("get", "never",typePath,null), 
@@ -173,7 +192,7 @@ class AbstractEntityMacro{
 
     }
 
-    private static function getClassPathFromClassFields(fields : Array<haxe.macro.ClassField>, canHaveAType : Bool) :  TypePath{
+    private static function getClassPathFromClassFields(fields : Array<haxe.macro.ClassField>, isType : Bool) :  TypePath{
         fields = fields.copy();
         fields.sort(function(x,y){
             if(x.name == y.name){
@@ -187,7 +206,7 @@ class AbstractEntityMacro{
             typeName += field.type.toString();
         }
 		
-		if (!canHaveAType) {
+		if (isType) {
 			typeName += "Type";
 		}
 

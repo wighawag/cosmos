@@ -3,13 +3,13 @@ package cosmos;
 import belt.ClassMap;
 
 @:allow(cosmos)
-class GenericEntity{
+class GenericEntityType{
 
 	var _components : ClassMap<Class<Dynamic>,Dynamic>;
-	public var type(default, null) : GenericEntityType;
+	public var id(default,null) : String;
 
-	private function new(type : GenericEntityType, components : Array<Dynamic>) {
-		this.type = type;
+	private function new(id : String, components : Array<Dynamic>) {
+		this.id = id;
 		_components = new ClassMap();
 		for (component in components) {
 			var clazz = Type.getClass(component);

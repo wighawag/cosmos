@@ -74,7 +74,7 @@ class Model{
 	}
 	
 	public function addEntityOfType(entityType : EntityType, components : Array<Dynamic>) {
-		var type : GenericEntity = entityType;
+		var type : GenericEntityType = entityType;
 		for (typeComponent in type._components) {
 			if (Std.is(typeComponent, ComponentProvider)) {
 				var provider : ComponentProvider = cast typeComponent;

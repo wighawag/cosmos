@@ -43,6 +43,7 @@ class TestSystem implements System{
 		trace("set4");
 		for (entity in set4){
 			trace(entity.type.bioType.maxLife);
+			trace(entity.type.id);
 		}
 		trace("set5");
 		for (entity in set5){
