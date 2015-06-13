@@ -1,0 +1,8 @@
+-main TestAll
+-js bin/test.js
+-cp test
+-cp src
+-lib utest
+-dce full
+
+-cmd node bin/test.js

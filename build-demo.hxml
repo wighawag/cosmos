@@ -1,5 +1,5 @@
 -main demo.CosmosTest
--js demo/bin/Main.js
+-js demo/bin/main.js
 -cp demo/src
 -cp src
 -debug
