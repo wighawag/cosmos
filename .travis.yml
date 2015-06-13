@@ -2,5 +2,5 @@ language: haxe
 haxe:
   - "3.2.0"
   - development
-hxml:
-  - demo/build.hxml
+script:
+  - cd demo; haxe build.hxml
