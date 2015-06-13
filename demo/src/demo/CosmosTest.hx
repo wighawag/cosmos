@@ -1,7 +1,9 @@
+package demo;
+
 import cosmos.Model;
-import test.Populator;
-import test.Presenter;
-import test.TestSystem;
+import demo.system.Populator;
+import demo.system.Presenter;
+import demo.system.TestSystem;
 
 class CosmosTest{
 	public static function main(){

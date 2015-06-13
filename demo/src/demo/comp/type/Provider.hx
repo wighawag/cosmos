@@ -1,4 +1,4 @@
-package comp.type;
+package demo.comp.type;
 import cosmos.ComponentProvider;
 import haxe.DynamicAccess;
 

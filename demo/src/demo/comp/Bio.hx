@@ -1,4 +1,4 @@
-package comp;
+package demo.comp;
 
 
 class Bio

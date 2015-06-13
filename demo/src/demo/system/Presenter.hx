@@ -1,5 +1,5 @@
-package test;
-import comp.TestComponent;
+package demo.system;
+import demo.comp.TestComponent;
 import cosmos.CosmosPresenter;
 import cosmos.Entities;
 

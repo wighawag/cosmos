@@ -1,13 +1,13 @@
-package comp;
+package demo.comp;
 
 class TestComponent{
 
 
 	public function new(text : String){
-		test = text;
+		value = text;
 	}
 
-	public var test : String;
+	public var value : String;
 
 
 }

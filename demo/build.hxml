@@ -1,5 +1,6 @@
--main CosmosTest
+-main demo.CosmosTest
 -js bin/Main.js
+-cp ../src
 -cp src
 -debug
 -D source-map-content

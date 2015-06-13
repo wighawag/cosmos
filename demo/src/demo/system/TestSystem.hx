@@ -1,9 +1,9 @@
-package test;
+package demo.system;
 
-import comp.FlameComponent;
-import comp.Placement;
-import comp.TestComponent;
-import comp.type.BioType;
+import demo.comp.FlameComponent;
+import demo.comp.Placement;
+import demo.comp.TestComponent;
+import demo.comp.type.BioType;
 import cosmos.System;
 import cosmos.Entity;
 import cosmos.Entities;
@@ -31,7 +31,7 @@ class TestSystem implements System{
 	function update(now : Float, dt : Float){
 		trace("set1");
 		for (entity in set1){
-			trace(entity.test.test);
+			trace(entity.test.value);
 			//model.removeEntity(entity);
 
 		}
@@ -41,7 +41,7 @@ class TestSystem implements System{
 		}
 		trace("set3");
 		for (entity in set3){
-			trace(entity.test.test + ", " + entity.flame.flame);
+			trace(entity.test.value + ", " + entity.flame.flame);
 			trace(entity.type.flame.flame);
 		}
 		trace("set4");

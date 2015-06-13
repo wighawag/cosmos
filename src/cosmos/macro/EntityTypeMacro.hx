@@ -44,6 +44,9 @@ class EntityTypeMacro
 				}
 
 				var type = Context.getType(componentClassPath);
+				if (type == null) {
+					Context.error(componentClassPath + " not found", pos);
+				}
 				var argExprs : Array<Expr> = [];
 				switch(type) {
 					case TInst(ref, _):

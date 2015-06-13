@@ -3,4 +3,4 @@ haxe:
   - "3.2.0"
   - development
 hxml:
-  - build.hxml
+  - demo/build.hxml

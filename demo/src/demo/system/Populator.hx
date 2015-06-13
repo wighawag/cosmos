@@ -1,8 +1,8 @@
-package test;
+package demo.system;
 
-import comp.Placement;
-import comp.TestComponent;
-import comp.FlameComponent;
+import demo.comp.Placement;
+import demo.comp.TestComponent;
+import demo.comp.FlameComponent;
 import cosmos.EntityType;
 import cosmos.System;
 using cosmos.ModelAccess;
