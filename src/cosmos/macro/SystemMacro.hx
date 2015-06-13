@@ -14,12 +14,17 @@ class SystemMacro{
 		var newFields = new Array<Field>();
 		
 		var fields = Context.getBuildFields();
-		var hasInitialiseField = false;
+		var initExprs = new Array<Expr>();
+		var hasStartField = false;
 		var hasUpdateField = false;
 		var viewNames : Array<String> = new Array();
 		for (field in fields){
-			if(field.name == "initialise"){
-				hasInitialiseField = true;
+			if(field.name == "_init"){
+				Context.error("_init is reserved", pos);
+				continue;
+			}
+			if(field.name == "start"){
+				hasStartField = true;
 				newFields.push(field);
 				continue;
 			}
@@ -33,7 +38,18 @@ class SystemMacro{
 				case FVar(type,expr):
 					switch(type){
 						case TPath(typePath):
-							if(typePath.name == "Entities" && typePath.params.length == 1){
+							if (typePath.name == "Entities" && typePath.params.length == 1) {
+								if (field.meta != null) {
+									for (meta in field.meta) {
+										if (meta.name == ":onAdded") {
+											var param = meta.params[0];
+											initExprs.push({pos:pos,expr:EMeta({pos:pos,name:":privateAccess",params:[]},macro $i{field.name}.onEntityAdded($e{param}))});
+										}else if (meta.name == ":onRemoved") {
+											var param = meta.params[0];
+											initExprs.push({pos:pos,expr:EMeta({pos:pos,name:":privateAccess",params:[]},macro $i{field.name}.onEntityRemoved($e{param}))});
+										}
+									}
+								}
 								var componentTypePaths = new Array<Expr>();
 								var typeComponentTypePaths = new Array<Expr>();
 								switch(typePath.params[0]){
@@ -93,12 +109,26 @@ class SystemMacro{
 			}
 		}
 
-		if(!hasInitialiseField){
+		
+		
+		newFields.push({
+			name:"_init", 
+			access:[APrivate],
+			kind : FFun({
+				args:[], 
+				ret:null, 
+				expr:macro $b{initExprs}
+			}), 
+			meta : [{pos:pos,name:"@:noCompletion"}], //TODO test
+			pos : pos
+		});
+		
+		if (!hasStartField) {
 			newFields.push({
-                name:"initialise", 
+                name:"start", 
                 access:[APrivate],
                 kind : FFun({
-                    args:[], 
+					args:[{name:"now",type:macro :Float}], 
                     ret:null, 
                     expr:macro {}
                 }), 

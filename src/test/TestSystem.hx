@@ -13,15 +13,19 @@ class TestSystem implements System{
 	var set1 : Entities<{test:TestComponent}>;
 	var set2 : Entities<{flame:FlameComponent}>;
 	var set3 : Entities<{test:TestComponent,flame:FlameComponent, type:{flame:FlameComponent}}>;
+	
+	@:onAdded(entityAddedToSet4)
+	@:onRemoved(entityRemovedFromSet4)
 	var set4 : Entities<{type:{bioType:BioType}}>;
+	
 	var set5 : Entities<{placement:Placement}>;
-
-	function initialise() {
-		set4.onEntityAdded(entityAddedToSet4);
-	}
 	
 	function entityAddedToSet4(entity) {
-		trace(entity);
+		trace("added : ", entity);
+	}
+	
+	function entityRemovedFromSet4(entity) {
+		trace("removed : ", entity);
 	}
 
 	function update(now : Float, dt : Float){
@@ -44,11 +48,14 @@ class TestSystem implements System{
 		for (entity in set4){
 			trace(entity.type.bioType.maxLife);
 			trace(entity.type.id);
+			model.removeEntity(entity);
 		}
 		trace("set5");
 		for (entity in set5){
 			trace(entity.placement);
 		}
+		
+		
 	}
 
 }

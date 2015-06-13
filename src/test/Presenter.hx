@@ -9,8 +9,8 @@ class Presenter implements CosmosPresenter
 
 	var set1 : Entities<{test:TestComponent}>;
 	
-	function initialise() {
-		trace("initialise");
+	function start(now : Float) {
+		trace("start");
 		for (entity in set1) {
 			trace(entity);
 		}

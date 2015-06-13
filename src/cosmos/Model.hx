@@ -12,6 +12,8 @@ class Model{
 	var _entities : List<GenericEntity>;
 
 	var _views : Array<ModelFacet<GenericEntity>>;
+	
+	var started = false;
 
 	public function new(systems : Array<System>){
 		_views = new Array();
@@ -34,7 +36,7 @@ class Model{
 		
 		for(system in systems){
 			system.model = this;
-			system.initialise();
+			system._init();
 		}		
 
 		// var failedSystems = initialise(systems);
@@ -56,13 +58,24 @@ class Model{
 				view.addEntityIfMatch(entity);
 			}
 		}
-		presenter.initialise();
+	}
+	
+	public function start(now : Float) {
+		for (system in _systems){
+			system.start(now);
+		}
+		started = true;
 	}
 
-	public function update(now : Float, delta : Float){
-		for (system in _updatableSystems){
-			system.update(now,delta);
+	public function update(now : Float, delta : Float) {
+		if (!started) {
+			start(now);
+		}else {
+			for (system in _updatableSystems){
+				system.update(now,delta);
+			}
 		}
+		
 	}
 
 	public function addEntity(components : Array<Dynamic>){

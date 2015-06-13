@@ -10,7 +10,7 @@ using cosmos.ModelAccess;
 
 class Populator implements System{
 
-	public function initialise(){
+	public function start(now : Float){
 		trace("Populator");
 		model.addEntity([new TestComponent("hello")]);
 		model.addEntity([new TestComponent("hello2")]);

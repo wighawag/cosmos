@@ -17,11 +17,11 @@ class ModelFacet<T> {
 		this.typeComponentClasses = typeComponentClasses.copy();
 	}
 	
-	public function onEntityAdded(func : T->Void) {
+	private function onEntityAdded(func : T->Void) {
 		this.onAddedFunc = func;
 	}
 	
-	public function onEntityRemoved(func : T->Void) {
+	private function onEntityRemoved(func : T->Void) {
 		this.onRemovedFunc = func;
 	}
 
@@ -29,7 +29,7 @@ class ModelFacet<T> {
 		return list.iterator();
 	}
 
-	private function addEntityIfMatch(entity : GenericEntity) : Bool{
+	private function addEntityIfMatch(entity : GenericEntity) : Bool {
 		for(componentClass in componentClasses){
 			if(!entity.has(componentClass)){
 				return false;

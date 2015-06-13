@@ -9,6 +9,7 @@ interface System {
 	private var updatable : Bool;
 	private var views : Array<ModelFacet<GenericEntity>>; //TODO private if possible ?
 	private var model : ModelData; //TODO private if possible?
-	private function initialise():Void;
+	private function _init():Void;
+	private function start(now : Float):Void;
 	private function update(now : Float, delta : Float):Void;
 }
