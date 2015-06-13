@@ -50,7 +50,7 @@ class Model{
   //       }
 	}
 	
-	public function addPresenter(presenter : CosmosPresenter) {
+	public function setupPresenter(presenter : CosmosPresenter) {
 		presenter.model = this;
 		for (view in presenter.views){
 			_views.push(view);

@@ -1,23 +1,24 @@
 package demo.system;
 
-import demo.comp.Placement;
-import demo.comp.TestComponent;
-import demo.comp.FlameComponent;
 import cosmos.EntityType;
 import cosmos.System;
+import demo.comp.NapeBody;
+import nape.phys.Body;
+import nape.phys.Material;
+import nape.shape.Circle;
 using cosmos.ModelAccess;
 
 
 class Populator implements System{
 
-	public function start(now : Float){
-		trace("Populator");
-		model.addEntity([new TestComponent("hello")]);
-		model.addEntity([new TestComponent("hello2")]);
-		model.addEntity([new FlameComponent(1)]);
-		model.addEntity([new TestComponent("both"), new FlameComponent(2)]);	
+	public function start(now : Float) {
+		var circle:Circle = new Circle(30); // local position argument is optional.
+		circle.material = Material.rubber();
+		var circleBody:Body = new Body(); // Implicit BodyType.DYNAMIC
+		circleBody.shapes.add(circle);
+		circleBody.position.setxy(500, 500);
 		
-		model.addEntityOfType(EntityType.DOG, [new TestComponent("DOG")]);
+		model.addEntity([new NapeBody(circleBody)]);
 		
 	}
 

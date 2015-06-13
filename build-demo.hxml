@@ -5,4 +5,5 @@
 -debug
 -D source-map-content
 -dce full
+-lib nape
 #-D dump=pretty

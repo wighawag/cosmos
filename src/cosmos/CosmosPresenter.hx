@@ -5,7 +5,7 @@ import cosmos.ModelFacet;
 
 @:allow(cosmos.Model)
 @:autoBuild(cosmos.macro.SystemMacro.apply())
-interface CosmosPresenter {
+interface CosmosPresenter { //TODO remove start/update
 	private var updatable : Bool;
 	private var views : Array<ModelFacet<GenericEntity>>; //TODO private if possible ?
 	private var model : ModelData; //TODO private if possible?
