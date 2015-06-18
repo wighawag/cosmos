@@ -1,13 +1,17 @@
 package demo;
 
+import control.Input;
 import cosmos.CosmosPresenter;
 import cosmos.Model;
+import demo.system.Controller;
 import demo.system.NapeSystem;
 import demo.system.Populator;
 import demo.view.CanvasPresenter;
 import haxe.Timer;
 import js.Browser;
 import js.html.CanvasElement;
+import nape.geom.Vec2;
+import nape.space.Space;
 
 class CosmosTest{
 	public static function main(){
@@ -23,7 +27,10 @@ class CosmosTest{
 		trace(canvasElement.clientWidth, canvasElement.clientHeight);
 		presenter = new CanvasPresenter(canvasElement);
 		
-		model = new Model([new NapeSystem(canvasElement.clientWidth, canvasElement.clientHeight), new Populator()]);
+		var gravity:Vec2 = new Vec2(0, -600); 
+		var space = new Space(gravity);
+		
+		model = new Model([new Controller(Input.initKeyboard(),space,canvasElement.clientWidth, canvasElement.clientHeight), new NapeSystem(space), new Populator()]);
 		model.setupPresenter(presenter);
 		
 		lastTime = Timer.stamp();

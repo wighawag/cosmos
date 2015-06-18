@@ -29,7 +29,8 @@
   </build>
   <!-- haxelib libraries -->
   <haxelib>
-    <library name="nape" />
+    <library name="nape:2.0.19" />
+    <library name="control:0.5.1" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
