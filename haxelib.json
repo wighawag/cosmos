@@ -7,7 +7,7 @@
 	"releasenote":"update version",
 	"version":"0.5.0",
 	"url":"https://github.com/wighawag/cosmos",
-	"classPath":"src",
+	"classPath":"Sources",
 	"dependencies":{
 	}
 }
