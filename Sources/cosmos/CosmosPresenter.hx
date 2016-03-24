@@ -3,7 +3,7 @@ package cosmos;
 import cosmos.GenericEntity;
 import cosmos.ModelFacet;
 
-@:allow(cosmos.Model)
+@:allow(cosmos.CosmosModel)
 @:autoBuild(cosmos.macro.SystemMacro.apply())
 interface CosmosPresenter { //TODO remove start/update
 	private var updatable : Bool;

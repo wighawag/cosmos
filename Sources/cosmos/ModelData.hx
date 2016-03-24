@@ -1,6 +1,6 @@
 package cosmos;
 
 @:forward(addEntity,removeEntity, addEntityOfType)
-abstract ModelData(cosmos.Model) from(Model){
+abstract ModelData(cosmos.CosmosModel) from(cosmos.CosmosModel){
 
 }

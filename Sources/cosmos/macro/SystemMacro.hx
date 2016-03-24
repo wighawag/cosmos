@@ -153,7 +153,7 @@ class SystemMacro{
 		
 		newFields.push({
                 name:"updatable", 
-                access:[APrivate], //TODO private with @:allow Model
+                access:[APrivate], //TODO private with @:allow CosmosModel
                 kind : FVar(macro :Bool, macro $v{hasUpdateField}), 
 				meta : [{pos:pos,name:"@:noCompletion"}],//TODO test
                 pos : pos
@@ -162,7 +162,7 @@ class SystemMacro{
 
 		newFields.push({
                 name:"views", 
-                access:[APrivate], //TODO private with @:allow Model
+                access:[APrivate], //TODO private with @:allow CosmosModel
                 kind : FVar(macro :Array<cosmos.ModelFacet<cosmos.GenericEntity>>, macro new Array()), 
 				meta : [{pos:pos,name:"@:noCompletion"}],//TODO test
                 pos : pos
